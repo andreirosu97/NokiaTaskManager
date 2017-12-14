@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logInGUI.NormalUserController">
+   <children>
+      <AnchorPane prefHeight="80.0" prefWidth="1000.0" style="-fx-background-color: #3eb8c5;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <JFXButton fx:id="logOutButton" buttonType="RAISED" layoutX="829.0" layoutY="14.0" onAction="#logOut" prefHeight="47.0" prefWidth="151.0" ripplerFill="#c63131" style="-fx-background-color: #535d6c;" text="Log Out" textFill="WHITE" />
+            <Label fx:id="wellcomeText" layoutX="14.0" layoutY="14.0" prefHeight="47.0" prefWidth="525.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="100.0" prefHeight="80.0" prefWidth="1000.0" style="-fx-background-color: #80c595;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <Label fx:id="numberOfTasksActive" layoutX="14.0" layoutY="14.0" prefHeight="47.0" prefWidth="525.0" />
+         </children>
+      </AnchorPane>
+      <JFXListView fx:id="taskListView" layoutY="160.0" prefHeight="492.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="160.0">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </JFXListView>
+   </children>
+</AnchorPane>
