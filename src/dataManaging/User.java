@@ -5,7 +5,13 @@
  */
 package dataManaging;
 
+import exceptions.NewTaskNotFound;
 import java.util.ArrayList;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import logInGUI.Task;
 
 public class User {
     private String uuid_;
@@ -16,6 +22,7 @@ public class User {
     private String jobTitle_;
     private String programmingLanguage_;
     private ArrayList<Integer> skills_;
+    private ObservableList tasks_ = FXCollections.observableArrayList();;
 
     public Boolean checkPasswordValidity(String pass){
         return pass_.equals(pass);
@@ -35,8 +42,46 @@ public class User {
         this.jobTitle_ = jobTitle_;
         this.programmingLanguage_ = programmingLanguage_;
         this.skills_ = skills_;
+        getTask();
     }
 
+    public void getTask() {
+        if(tasks_.size() < 3)
+        {
+            //TODO get tasks from db
+            try{
+                tasks_.add(DataBase.getNewTaskForUser(this));
+                System.out.println("New Task was added !");
+            }catch(NewTaskNotFound e) {
+                System.out.println(e);
+            }
+        }
+    }
+    
+    public void removeTask(Task task) {
+        tasks_.remove(task);
+    }
+    
+    public String getNumberOfTasks() {
+        return String.valueOf(tasks_.size());
+    }
+    
+    public IntegerBinding getTasksSizeBinding() {
+        return Bindings.size(tasks_);
+    }
+    
+    public Boolean hasDifficultTask() {
+        for(int i=0; i < tasks_.size(); i++)
+            if(((Task)tasks_.get(i)).isDifficult())
+                return true;
+        return false;
+    }
+
+    /*Getters and setters*/
+    public ObservableList getTasks() {
+        return tasks_;
+    }
+    
     public String getUuid_() {
         return uuid_;
     }
@@ -101,8 +146,5 @@ public class User {
         this.skills_ = skills_;
     }
 
-    public String getNumberOfTasks() {
-        return "PULA";
-    }
    
 }

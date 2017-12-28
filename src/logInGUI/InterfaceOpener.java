@@ -65,6 +65,4 @@ public class InterfaceOpener {
         stage_.show();
     }
     
-    
-    
 }

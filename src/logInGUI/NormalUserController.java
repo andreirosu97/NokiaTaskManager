@@ -6,21 +6,25 @@
 package logInGUI;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXListView;
 import dataManaging.User;
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.ArrayList;
+import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
  *
  * @author Andrei
  */
-public class NormalUserController implements Initializable {
+public class NormalUserController {
 
     User user_;
     
@@ -31,35 +35,61 @@ public class NormalUserController implements Initializable {
     @FXML
     private Label numberOfTasksActive;
     @FXML
-    private JFXListView<Label> taskListView;
+    private JFXListView listView;
+    
+    private final         List<Task>        stringList     = new ArrayList<>(5);
+    private         ObservableList      observableList = FXCollections.observableArrayList();
+    @FXML
+    private AnchorPane mainPane;
+    @FXML
+    private JFXButton moreTasks;
+
 
     
     public void populateScreen(User user) {
         user_ = user;
         wellcomeText.setText("Wellcome to your task manager " + user_.getFullName_());
-        numberOfTasksActive.setText("Tasks active : " + user_.getNumberOfTasks());
+        numberOfTasksActive.textProperty().bind(user.getTasksSizeBinding().asString());
+        setListView();      
     }
+    
+    public void setListView(){
+
+         System.out.println("Apelat setListView()");
+
+         observableList = user_.getTasks();
+         
+         listView.setItems(observableList);
+         listView.setCellFactory(
+             new Callback<JFXListView<Task>, 
+                     com.jfoenix.controls.JFXListCell<Task>>() {
+                 @Override
+                 public JFXListCell<Task> call(JFXListView<Task> listView) {
+                     return new ListViewCell();
+                 }
+             });
+     }
+    
+    @FXML
+    private void logOut(ActionEvent event) {
+        NOKIA.closeStage();
+        NOKIA.openLogInStage();
+    }
+
+    @FXML
+    private void getMoreTasks(ActionEvent event) {
+        System.out.println("Get more tasks!");
+        user_.getTask();
+    }
+    
     
     /**
      * Initializes the controller class.
      * @param url
      * @param rb
      */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        for(int i = 0; i < 4; i++)
-            try{
-                Label lbl = new Label("Task " + i);
-                taskListView.getItems().add(lbl);
-            }catch(Exception e){
-                System.out.println("Nu pot face lista !");
-            }
-    }    
-
-    @FXML
-    private void logOut(ActionEvent event) {
-        NOKIA.closeStage();
-        NOKIA.openLogInStage();
-    }
-    
+    void initialize() {
+         assert listView != null : "fx:id=\"listView\" was not injected: "
+                 + "check your FXML file 'CustomList.fxml'.";
+     }  
 }

@@ -35,6 +35,9 @@ public class NOKIA extends Application {
     public static void openLogInStage() {
         try{
             stage_ = new Stage();
+            stage_.setMinHeight(450);
+            stage_.setMinWidth(650);
+            stage_.setResizable(false);
             logIn_ = new StartLogIn(stage_);
         }catch (Exception ex) {
             Logger.getLogger(NOKIA.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,6 +47,8 @@ public class NOKIA extends Application {
     public static void openUserStage(LogInModel model) {
         try{
             stage_ = new Stage();
+            stage_.setMinHeight(670);
+            stage_.setMinWidth(1020);
             InterfaceOpener interface_ = new InterfaceOpener(model.getUser(), stage_);
         }catch(UserNotSetYet e){
             System.err.println(e);

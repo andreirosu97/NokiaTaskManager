@@ -5,33 +5,29 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="439.0" prefWidth="641.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logInGUI.LogInView">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="650.0" style="-fx-background-color: #5aa492;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logInGUI.LogInView">
    <children>
-      <Pane layoutX="47.0" layoutY="40.0" prefHeight="360.0" prefWidth="548.0" style="-fx-background-color: d3f4af;">
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffffe1;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <children>
-            <JFXTextField id="userName" fx:id="userName" cache="true" focusColor="#71a9f2" layoutX="89.0" layoutY="67.0" prefHeight="47.0" prefWidth="371.0" promptText="Username" onAction="#moveForward">
+            <JFXTextField id="userName" fx:id="userName" cache="true" focusColor="#71a9f2" layoutX="120.0" layoutY="81.0" onAction="#moveForward" prefHeight="47.0" prefWidth="371.0" promptText="Username" AnchorPane.bottomAnchor="280.0" AnchorPane.leftAnchor="110.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="80.0">
                <font>
                   <Font name="Comic Sans MS" size="15.0" />
                </font>
             </JFXTextField>
-            <JFXPasswordField fx:id="passWord" layoutX="89.0" layoutY="146.0" prefHeight="47.0" prefWidth="371.0" promptText="Password" onAction="#logInButton">
+            <JFXPasswordField fx:id="passWord" layoutX="120.0" layoutY="205.0" onAction="#logInButton" prefHeight="47.0" prefWidth="371.0" promptText="Password" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="110.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="200.0">
                <font>
                   <Font name="Comic Sans MS" size="16.0" />
                </font>
             </JFXPasswordField>
-            <JFXButton fx:id="logIn" buttonType="RAISED" layoutX="201.0" layoutY="236.0" onAction="#logInButton" prefHeight="47.0" prefWidth="147.0" ripplerFill="WHITE" style="-fx-background-color: a3abea;" text="Login">
+            <JFXButton fx:id="logIn" buttonType="RAISED" layoutX="232.0" layoutY="321.0" onAction="#logInButton" prefHeight="47.0" prefWidth="147.0" ripplerFill="WHITE" style="-fx-background-color: a3abea;" text="Login" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="230.0" AnchorPane.topAnchor="320.0">
                <font>
                   <Font name="Comic Sans MS" size="15.0" />
                </font>
             </JFXButton>
          </children>
-         <effect>
-            <DropShadow />
-         </effect>
-      </Pane>
+      </AnchorPane>
    </children>
    <effect>
       <DropShadow />
