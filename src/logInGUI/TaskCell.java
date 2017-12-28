@@ -48,7 +48,7 @@ public class TaskCell
     @FXML
      void initialize() {
          button.setOnAction((event) -> {
-             System.out.println("Apasat" + task.getNume());
+             System.out.println("Finished task : " + task.getNume());
              done();
 });
      }   

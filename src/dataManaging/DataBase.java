@@ -111,6 +111,7 @@ public class DataBase{
                         rs.getBoolean("done")));
                 }
                 if(tasks.size() > 0){
+                    user.selectBestTask(tasks);
                     setOwnerOfTask(user,tasks.get(0));
                     return tasks.get(0);
                 }
@@ -122,38 +123,14 @@ public class DataBase{
             }
             throw new NewTaskNotFound();
         }
-        
-        private static void setOwnerOfTask(User user, Task task) throws NewOwnerOfTaskNotSet {
-            String query = "UPDATE tasks SET prg_uuid = ? WHERE uuid = ?";
-            try{
-                PreparedStatement pst = con.prepareStatement(query);
-                pst.setString(1, user.getUuid_());
-                pst.setString(2, task.getTaskUuid());
-                pst.executeUpdate();
-            }catch (SQLException e) {
-                throw new NewOwnerOfTaskNotSet(task.getNume());
-            }
-        }
-        
-        public static void setTaskAsDone(Task task) throws TaskWasNotSetAsDone{
-            String query = "UPDATE tasks SET done = '1' WHERE uuid = ?";
-            try{
-                PreparedStatement pst = con.prepareStatement(query);
-                pst.setString(1, task.getTaskUuid());
-                pst.executeUpdate();
-            }catch (SQLException e) {
-                throw new TaskWasNotSetAsDone(task.getNume());
-            }
-        }
-        
+ 
         public static ObservableList getTasksForUser(User user) throws NoTasksFoundForUser {
         String query = "SELECT * FROM tasks WHERE done = 0 AND prg_uuid = ?";
             ArrayList<Task> tasks = new ArrayList<>();
             ResultSet rs;
             try{
                 PreparedStatement pst = con.prepareStatement(query);
-                pst.setString(1, user.getProgrammingLanguage_());
-                pst.setString(2, user.getUuid_());
+                pst.setString(1, user.getUuid_());
                 rs = pst.executeQuery();
                 
                 while(rs.next()) {
@@ -184,4 +161,27 @@ public class DataBase{
             throw new NoTasksFoundForUser(user.getFullName_());
         }
 
+                
+        private static void setOwnerOfTask(User user, Task task) throws NewOwnerOfTaskNotSet {
+            String query = "UPDATE tasks SET prg_uuid = ? WHERE uuid = ?";
+            try{
+                PreparedStatement pst = con.prepareStatement(query);
+                pst.setString(1, user.getUuid_());
+                pst.setString(2, task.getTaskUuid());
+                pst.executeUpdate();
+            }catch (SQLException e) {
+                throw new NewOwnerOfTaskNotSet(task.getNume());
+            }
+        }
+        
+        public static void setTaskAsDone(Task task) throws TaskWasNotSetAsDone{
+            String query = "UPDATE tasks SET done = '1' WHERE uuid = ?";
+            try{
+                PreparedStatement pst = con.prepareStatement(query);
+                pst.setString(1, task.getTaskUuid());
+                pst.executeUpdate();
+            }catch (SQLException e) {
+                throw new TaskWasNotSetAsDone(task.getNume());
+            }
+        }
 }

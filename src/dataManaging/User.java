@@ -6,7 +6,12 @@
 package dataManaging;
 
 import exceptions.NewTaskNotFound;
+import exceptions.NoTasksFoundForUser;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
 import javafx.collections.FXCollections;
@@ -42,10 +47,10 @@ public class User {
         this.jobTitle_ = jobTitle_;
         this.programmingLanguage_ = programmingLanguage_;
         this.skills_ = skills_;
-        getTask();
+        getTasksFromDB();
     }
-
-    public void getTask() {
+    
+    public void getTaskFromDB() {
         if(tasks_.size() < 3)
         {
             //TODO get tasks from db
@@ -53,7 +58,7 @@ public class User {
                 tasks_.add(DataBase.getNewTaskForUser(this));
                 System.out.println("New Task was added !");
             }catch(NewTaskNotFound e) {
-                System.out.println(e);
+                Logger.getLogger(User.class.getName()).log(Level.WARNING,null, e);
             }
         }
     }
@@ -61,6 +66,17 @@ public class User {
     public void removeTask(Task task) {
         tasks_.remove(task);
     }
+    
+    
+    private void getTasksFromDB() {
+        try {
+            tasks_ = DataBase.getTasksForUser(this);
+        } catch (NoTasksFoundForUser ex) {
+            getTaskFromDB();
+            Logger.getLogger(User.class.getName()).log(Level.FINE, "No tasks yet assigned!");
+        }
+    }
+
     
     public String getNumberOfTasks() {
         return String.valueOf(tasks_.size());
@@ -77,6 +93,32 @@ public class User {
         return false;
     }
 
+    public void selectBestTask(ArrayList<Task> tasks) {
+                    System.out.println("Im fine ewadas!");
+        Collections.sort(tasks, new Comparator<Task>() {
+        @Override
+        public int compare(Task task1, Task task2)
+        {
+            int a=0,b=0;
+            int distance1 = 0;
+            int distance2 = 0;
+            System.out.println(skills_.get(0));
+            for(int i:skills_)
+                distance1 += Math.abs(i - task1.getSkills_().get(a++));
+            for(int j:skills_)
+                distance2 += Math.abs(j - task2.getSkills_().get(b++));
+
+            if(distance1 > distance2)
+                return 1;
+            else
+                if(distance1 == distance2)
+                    return 0;
+            return -1;
+        }
+    });
+    }
+                
+    
     /*Getters and setters*/
     public ObservableList getTasks() {
         return tasks_;
@@ -145,6 +187,8 @@ public class User {
     public void setSkills_(ArrayList<Integer> skills_) {
         this.skills_ = skills_;
     }
+
+    
 
    
 }

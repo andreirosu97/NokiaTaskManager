@@ -15,6 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
@@ -55,8 +56,6 @@ public class NormalUserController {
     
     public void setListView(){
 
-         System.out.println("Apelat setListView()");
-
          observableList = user_.getTasks();
          
          listView.setItems(observableList);
@@ -78,8 +77,17 @@ public class NormalUserController {
 
     @FXML
     private void getMoreTasks(ActionEvent event) {
+        int numberOfTasks = Integer.parseInt(user_.getNumberOfTasks());
         System.out.println("Get more tasks!");
-        user_.getTask();
+        user_.getTaskFromDB();
+        if(numberOfTasks == Integer.parseInt(user_.getNumberOfTasks() ))
+        {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Getting tasks message");
+            alert.setHeaderText(null);
+            alert.setContentText("No tasks are available that suit your skills!\n Come back later !");
+            alert.showAndWait();
+        }
     }
     
     

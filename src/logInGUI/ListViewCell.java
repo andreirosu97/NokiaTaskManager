@@ -10,7 +10,6 @@ public class ListViewCell extends JFXListCell<Task>
         super.updateItem(obj,empty);
         if(obj != null)
         {
-            System.out.println("Apelat updateItem");
             TaskCell data = new TaskCell();
             data.setInfo(obj);
             setGraphic(data.getBox());

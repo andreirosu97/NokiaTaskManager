@@ -35,6 +35,11 @@ public class Task {
         this.done = done;
     }
 
+    public ArrayList<Integer> getSkills_() {
+        return skills_;
+    }
+
+    
     public String getNume() {
         return nume;
     }
