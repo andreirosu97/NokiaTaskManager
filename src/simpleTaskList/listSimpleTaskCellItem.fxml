@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="hBox" prefHeight="70.0" prefWidth="470.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<children>
+    <Label fx:id="taskName" layoutX="17.0" prefHeight="25.0" prefWidth="200.0" style="-fx-font-size: 20;" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="6.0" />
+    <Label fx:id="language" layoutX="222.0" layoutY="20.0" prefHeight="25.0" prefWidth="200.0" style="-fx-font-size: 20;" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="6.0" />
+    <Label fx:id="difficulty" layoutX="407.0" layoutY="10.0" prefHeight="52.0" prefWidth="50.0" style="-fx-font-size: 20;" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="6.0" />
+</children>
+</AnchorPane>

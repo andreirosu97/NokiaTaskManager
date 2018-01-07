@@ -6,7 +6,6 @@
 package logInGUI;
 
 import dataManaging.DataBase;
-import dataManaging.User;
 import exceptions.NotStartProgram;
 import exceptions.UserNotSetYet;
 import java.util.logging.Level;
@@ -48,7 +47,8 @@ public class NOKIA extends Application {
         try{
             stage_ = new Stage();
             stage_.setMinHeight(670);
-            stage_.setMinWidth(1020);
+            stage_.setMinWidth(1200);
+            stage_.setResizable(false);
             InterfaceOpener interface_ = new InterfaceOpener(model.getUser(), stage_);
         }catch(UserNotSetYet e){
             System.err.println(e);

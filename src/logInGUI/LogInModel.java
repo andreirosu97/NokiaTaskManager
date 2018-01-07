@@ -25,7 +25,6 @@ public class LogInModel{
     public Boolean checkValidityOfUser(String user, String pass) {
         try{
             user_ = DataBase.getUserData(user);
-            System.out.println("User was set!");
             if(user_.checkPasswordValidity(pass))
                 return true;
         }catch(UserNotFound e)

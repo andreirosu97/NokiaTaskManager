@@ -5,8 +5,14 @@
  */
 package dataManaging;
 
+import exceptions.EmployeesNotFound;
+import exceptions.NewOwnerOfTaskNotSet;
 import exceptions.NewTaskNotFound;
+import exceptions.NoTasksAvailable;
 import exceptions.NoTasksFoundForUser;
+import exceptions.TaskCapacityReached;
+import exceptions.UserAlreadyHasDifficultTask;
+import exceptions.UsersProgrammingLanguageDoesNotMatchTask;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,7 +22,6 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import logInGUI.Task;
 
 public class User {
     private String uuid_;
@@ -27,7 +32,8 @@ public class User {
     private String jobTitle_;
     private String programmingLanguage_;
     private ArrayList<Integer> skills_;
-    private ObservableList tasks_ = FXCollections.observableArrayList();;
+    private ObservableList tasks_ = FXCollections.observableArrayList();
+    private ObservableList employees_ = FXCollections.observableArrayList();
 
     public Boolean checkPasswordValidity(String pass){
         return pass_.equals(pass);
@@ -47,18 +53,34 @@ public class User {
         this.jobTitle_ = jobTitle_;
         this.programmingLanguage_ = programmingLanguage_;
         this.skills_ = skills_;
-        getTasksFromDB();
+        if(uuidManager_ != null)
+            getTasksFromDB();
+        else{
+            getEmployeesFromDB(); 
+            try{
+                tasks_ = DataBase.getTasks(this);
+            }catch(NoTasksAvailable e){
+                System.out.println("No tasks were found !");
+            }
+        }
     }
     
+     private void getEmployeesFromDB() {
+        try{
+            employees_ = DataBase.getEmployeesForUser(this);
+            System.out.println("Employees for " + this.fullName_ +" added !");
+        }catch(EmployeesNotFound e) {
+            System.out.println("No employees were found for " + this.getFullName_());
+        }
+    }
+
     public void getTaskFromDB() {
-        if(tasks_.size() < 3)
-        {
-            //TODO get tasks from db
+        if(tasks_.size() < 3) {
             try{
                 tasks_.add(DataBase.getNewTaskForUser(this));
-                System.out.println("New Task was added !");
+                System.out.println("New Task was added for " + fullName_ + "!");
             }catch(NewTaskNotFound e) {
-                Logger.getLogger(User.class.getName()).log(Level.WARNING,null, e);
+                System.out.println("No tasks were found for " + this.getFullName_());
             }
         }
     }
@@ -94,7 +116,6 @@ public class User {
     }
 
     public void selectBestTask(ArrayList<Task> tasks) {
-                    System.out.println("Im fine ewadas!");
         Collections.sort(tasks, new Comparator<Task>() {
         @Override
         public int compare(Task task1, Task task2)
@@ -102,7 +123,6 @@ public class User {
             int a=0,b=0;
             int distance1 = 0;
             int distance2 = 0;
-            System.out.println(skills_.get(0));
             for(int i:skills_)
                 distance1 += Math.abs(i - task1.getSkills_().get(a++));
             for(int j:skills_)
@@ -117,7 +137,22 @@ public class User {
         }
     });
     }
-                
+    
+    public void addTask(Task task) throws UserAlreadyHasDifficultTask,UsersProgrammingLanguageDoesNotMatchTask,TaskCapacityReached{
+        if(tasks_.size() == 3)
+            throw new TaskCapacityReached();
+        if(!task.getProgrammingLanguage().equals(this.programmingLanguage_)) 
+            throw new UsersProgrammingLanguageDoesNotMatchTask();
+        if((task.isDifficult() && this.hasDifficultTask()))
+            throw new UserAlreadyHasDifficultTask();
+        try {
+            task.changeUser(this);
+            tasks_.add(task);
+            DataBase.setOwnerOfTask(this, task);
+        } catch (NewOwnerOfTaskNotSet ex) {
+            System.out.println("New owner of task could not be set !");
+        }
+    }          
     
     /*Getters and setters*/
     public ObservableList getTasks() {
@@ -188,7 +223,14 @@ public class User {
         this.skills_ = skills_;
     }
 
-    
+    public ObservableList getEmployees_() throws EmployeesNotFound{
+        if(employees_.isEmpty())
+            throw new EmployeesNotFound(this.fullName_);
+        return employees_;
+    }
 
-   
+    @Override
+    public String toString() {
+        return null;
+    }
 }

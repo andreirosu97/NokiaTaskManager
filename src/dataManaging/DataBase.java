@@ -1,9 +1,12 @@
 package dataManaging;
 
+import exceptions.EmployeesNotFound;
 import exceptions.NewOwnerOfTaskNotSet;
 import exceptions.NewTaskNotFound;
+import exceptions.NoTasksAvailable;
 import exceptions.NoTasksFoundForUser;
 import exceptions.NotStartProgram;
+import exceptions.TaskCouldNotBeAbandoned;
 import exceptions.TaskWasNotSetAsDone;
 import exceptions.UserNotFound;
 import java.sql.*;
@@ -11,10 +14,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import logInGUI.Task;
 
 public class DataBase{
 	protected static Connection con;
+
+
 
 	public DataBase() throws NotStartProgram{
 		try	{
@@ -82,8 +86,44 @@ public class DataBase{
             throw new UserNotFound();
         }
         
+        public static ObservableList getTasks(User user) throws NoTasksAvailable{
+            String query = "SELECT * FROM tasks WHERE done = 0 AND prg_uuid IS NULL ORDER BY prg_lg";
+            ArrayList<Task> tasks = new ArrayList<>();
+            ResultSet rs;
+            try{
+                PreparedStatement pst = con.prepareStatement(query);
+                rs = pst.executeQuery();
+                while(rs.next()) {
+                    tasks.add(new Task(user,
+                        rs.getString("uuid"),
+                        rs.getString("name"),
+                        rs.getString("prg_lg"),
+                        rs.getInt("difficulty"),
+                        rs.getDate("dead_line"),
+                        new ArrayList<>(Arrays.asList(
+                                        rs.getInt("skill1"),
+                                        rs.getInt("skill2"),
+                                        rs.getInt("skill3"),
+                                        rs.getInt("skill4")
+                                        )),
+                        rs.getString("prg_uuid"),
+                        rs.getBoolean("done")));
+                }
+                if(tasks.size() > 0){
+                    ObservableList o = FXCollections.observableArrayList();
+                    o.setAll(tasks);
+                    return o;
+                }
+            }catch (SQLException e) {
+                System.err.println("Error at getNewTaskForUser()");
+            }
+            throw new NoTasksAvailable();
+        }
+        
         public static Task getNewTaskForUser(User user) throws NewTaskNotFound{
-            String query = "SELECT * FROM tasks WHERE prg_lg = ? AND done = 0 AND prg_uuid IS NULL AND difficulty < ?";
+            String query = "SELECT * FROM tasks WHERE prg_lg = ? AND done = 0 AND prg_uuid IS NULL AND difficulty < ?  "
+                    + "AND ( last_prg_uuid != ? OR last_prg_uuid IS NULL)";
+            
             ArrayList<Task> tasks = new ArrayList<>();
             ResultSet rs;
             try{
@@ -93,6 +133,7 @@ public class DataBase{
                     pst.setInt(2, 6);
                 else
                     pst.setInt(2,11);
+                pst.setString(3, user.getUuid_());
                 
                 rs = pst.executeQuery();
                 while(rs.next()) {
@@ -101,6 +142,7 @@ public class DataBase{
                         rs.getString("name"),
                         rs.getString("prg_lg"),
                         rs.getInt("difficulty"),
+                        rs.getDate("dead_line"),
                         new ArrayList<>(Arrays.asList(
                                         rs.getInt("skill1"),
                                         rs.getInt("skill2"),
@@ -124,8 +166,43 @@ public class DataBase{
             throw new NewTaskNotFound();
         }
  
+        public static ObservableList getEmployeesForUser(User user) throws EmployeesNotFound{
+            String query = "SELECT * FROM employees WHERE uuid_mgr = ?";
+            ArrayList<User> users = new ArrayList<>();
+            ResultSet rs;
+            try{
+                PreparedStatement pst = con.prepareStatement(query);
+                pst.setString(1, user.getUuid_());
+                rs = pst.executeQuery();
+                while(rs.next())
+                    users.add(new User(
+                            rs.getString("uuid"),
+                            rs.getString("password"),
+                            rs.getString("full_name"),
+                            rs.getString("team"),
+                            rs.getString("uuid_mgr"),
+                            rs.getString("job_title"),
+                            rs.getString("prg_lg"),
+                            new ArrayList<>(Arrays.asList(
+                                    rs.getInt("skill1"),
+                                    rs.getInt("skill2"),
+                                    rs.getInt("skill3"),
+                                    rs.getInt("skill4")
+                                    )))
+                    );
+                if(users.size() > 0){
+                    ObservableList o = FXCollections.observableArrayList();
+                    o.setAll(users);
+                    return o;
+                }
+            }catch (SQLException e) {
+                System.err.println("Error at getEmployeesForUser()");
+            }
+            throw new EmployeesNotFound(user.getFullName_());
+        }
+        
         public static ObservableList getTasksForUser(User user) throws NoTasksFoundForUser {
-        String query = "SELECT * FROM tasks WHERE done = 0 AND prg_uuid = ?";
+            String query = "SELECT * FROM tasks WHERE done = 0 AND prg_uuid = ?";
             ArrayList<Task> tasks = new ArrayList<>();
             ResultSet rs;
             try{
@@ -139,6 +216,7 @@ public class DataBase{
                         rs.getString("name"),
                         rs.getString("prg_lg"),
                         rs.getInt("difficulty"),
+                        rs.getDate("dead_line"),
                         new ArrayList<>(Arrays.asList(
                                         rs.getInt("skill1"),
                                         rs.getInt("skill2"),
@@ -162,7 +240,7 @@ public class DataBase{
         }
 
                 
-        private static void setOwnerOfTask(User user, Task task) throws NewOwnerOfTaskNotSet {
+        public static void setOwnerOfTask(User user, Task task) throws NewOwnerOfTaskNotSet {
             String query = "UPDATE tasks SET prg_uuid = ? WHERE uuid = ?";
             try{
                 PreparedStatement pst = con.prepareStatement(query);
@@ -182,6 +260,18 @@ public class DataBase{
                 pst.executeUpdate();
             }catch (SQLException e) {
                 throw new TaskWasNotSetAsDone(task.getNume());
+            }
+        }
+        
+        public static void abandonTask(Task task) throws TaskCouldNotBeAbandoned {
+            String query = "UPDATE tasks SET last_prg_uuid = ?, prg_uuid = NULL WHERE uuid = ?";
+            try{
+                PreparedStatement pst = con.prepareStatement(query);
+                pst.setString(1, task.getUser_().getUuid_());
+                pst.setString(2, task.getTaskUuid());
+                pst.executeUpdate();
+            }catch (SQLException e) {
+                throw new TaskCouldNotBeAbandoned(task.getNume());
             }
         }
 }

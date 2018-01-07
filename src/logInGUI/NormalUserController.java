@@ -5,6 +5,8 @@
  */
 package logInGUI;
 
+import taskList.ListTaskViewCell;
+import dataManaging.Task;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXListView;
@@ -64,7 +66,7 @@ public class NormalUserController {
                      com.jfoenix.controls.JFXListCell<Task>>() {
                  @Override
                  public JFXListCell<Task> call(JFXListView<Task> listView) {
-                     return new ListViewCell();
+                     return new ListTaskViewCell();
                  }
              });
      }
@@ -85,7 +87,7 @@ public class NormalUserController {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Getting tasks message");
             alert.setHeaderText(null);
-            alert.setContentText("No tasks are available that suit your skills!\n Come back later !");
+            alert.setContentText("No tasks are available that suit your skills!\nCome back later !");
             alert.showAndWait();
         }
     }

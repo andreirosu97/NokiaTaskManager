@@ -7,11 +7,8 @@ package logInGUI;
 
 import dataManaging.User;
 import exceptions.UserNotSetYet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -47,15 +44,19 @@ public class InterfaceOpener {
         }
     }
     
-    private void OpenManagerInterface() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("ERROR !");
-        alert.setHeaderText(null);
-        alert.setContentText("UI not yet implemented ! ");
-        alert.showAndWait();
+    private void OpenManagerInterface() throws Exception{
+        System.out.println("Manager " + user_.getFullName_() +" logged in !");
+        FXMLLoader loader = new FXMLLoader();
+        Pane userRoot = loader.load(getClass().getResource("manager.fxml").openStream());
+        ManagerController controller = (ManagerController)loader.getController();
+        controller.populateScreen(user_);
+        Scene userScene = new Scene(userRoot);
+        stage_.setScene(userScene);
+        stage_.show();
     }
     
     private void OpenNormalInterface() throws Exception{
+        System.out.println("User " + user_.getFullName_() +" logged in !");
         FXMLLoader loader = new FXMLLoader();
         Pane userRoot = loader.load(getClass().getResource("normalUser.fxml").openStream());
         NormalUserController controller = (NormalUserController)loader.getController();

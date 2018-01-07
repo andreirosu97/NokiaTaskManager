@@ -13,8 +13,8 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <JFXButton fx:id="logOutButton" buttonType="RAISED" layoutX="829.0" layoutY="14.0" onAction="#logOut" prefHeight="47.0" prefWidth="151.0" ripplerFill="#c63131" style="-fx-background-color: #535d6c;" text="Log Out" textFill="WHITE" />
-            <Label fx:id="wellcomeText" layoutX="14.0" layoutY="14.0" prefHeight="47.0" prefWidth="525.0" style="-fx-font-size: 20;" />
+            <JFXButton fx:id="logOutButton" buttonType="RAISED" layoutX="829.0" layoutY="14.0" onAction="#logOut" prefHeight="47.0" prefWidth="151.0" ripplerFill="#c63131" style="-fx-background-color: #535d6c;" text="Log Out" textFill="WHITE" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+            <Label fx:id="wellcomeText" layoutX="14.0" layoutY="14.0" prefHeight="47.0" prefWidth="525.0" style="-fx-font-size: 20;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
          </children>
       </AnchorPane>
       <AnchorPane layoutY="100.0" prefHeight="80.0" prefWidth="1000.0" style="-fx-background-color: #80c595;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
@@ -22,9 +22,9 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <Label layoutX="14.0" layoutY="14.0" prefHeight="47.0" prefWidth="229.0" style="-fx-font-size: 20;" text="Number of active tasks:" />
-            <Label fx:id="numberOfTasksActive" layoutX="243.0" layoutY="14.0" prefHeight="47.0" prefWidth="57.0" style="-fx-font-size: 20;" />
-            <JFXButton fx:id="moreTasks" buttonType="RAISED" layoutX="828.0" layoutY="19.0" onAction="#getMoreTasks" prefHeight="47.0" prefWidth="151.0" ripplerFill="#57cd2f" style="-fx-background-color: #236a6c;" text="Get more tasks" textFill="WHITE" />
+            <Label layoutX="14.0" layoutY="14.0" prefHeight="47.0" prefWidth="230.0" style="-fx-font-size: 20;" text="Number of active tasks:" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+            <Label fx:id="numberOfTasksActive" layoutX="243.0" layoutY="14.0" prefHeight="47.0" prefWidth="57.0" style="-fx-font-size: 20;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="5.0" />
+            <JFXButton fx:id="moreTasks" buttonType="RAISED" layoutX="828.0" layoutY="19.0" onAction="#getMoreTasks" prefHeight="47.0" prefWidth="151.0" ripplerFill="#57cd2f" style="-fx-background-color: #236a6c;" text="Get more tasks" textFill="WHITE" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
          </children>
       </AnchorPane>
       <JFXListView fx:id="listView" layoutY="160.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="160.0">

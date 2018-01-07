@@ -1,16 +1,17 @@
-package logInGUI;
+package userList;
 
 import com.jfoenix.controls.JFXListCell;
+import dataManaging.User;
 
-public class ListViewCell extends JFXListCell<Task>
+public class ListUserViewCell extends JFXListCell<User>
 {
     @Override
-    public void updateItem(Task obj, boolean empty)
+    public void updateItem(User obj, boolean empty)
     {
         super.updateItem(obj,empty);
         if(obj != null)
         {
-            TaskCell data = new TaskCell();
+            UserCell data = new UserCell();
             data.setInfo(obj);
             setGraphic(data.getBox());
         }
